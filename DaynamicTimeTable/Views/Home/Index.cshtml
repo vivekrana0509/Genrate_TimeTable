@@ -1,0 +1,35 @@
+﻿@using System.Web.Mvc
+@using System.Web.UI.WebControls
+@using DaynamicTimeTable.Models
+@model DaynamicTimeTable.Models.TimeTable
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<main>
+    <section class="row" aria-labelledby="aspnetTitle">
+    </section>
+    @using (Html.BeginForm())
+    {
+            <div class="row">
+                <section class="col-md-4" aria-labelledby="gettingStarted">
+                    <label>    Enter No of Working days per Week  :</label> @Html.TextBoxFor(model => model.Days, new { @class = "form-control", @id = "days", placeholder = "1 to 7", pattern = "[1-7]$" ,required = "required" })
+
+
+                    <br /><br />
+
+                    <label>    Enter No of Subject per in Day   :</label> @Html.TextBoxFor(model => model.Subject, new { @class = "form-control", @id = "sunject", placeholder = "1 to 9 ( <9)", pattern = "[1-9]$", required = "required" })
+
+                    <br><br />
+
+                    <input type="submit" name="submit" />
+                </section>
+            </div>
+
+    }
+    </main>
+
+<script>
+   
+</script>

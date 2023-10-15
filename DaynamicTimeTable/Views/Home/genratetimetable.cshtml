@@ -1,0 +1,61 @@
+﻿@using System.Web.Mvc
+@using System.Web.UI.WebControls
+@using DaynamicTimeTable.Models
+@using System.Data
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid #000;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+    @{
+        ViewBag.Title = "Time Table";
+        DataTable dt = null;
+        if (Session["timetable"] != null)
+        {
+            dt = Session["timetable"] as DataTable;
+        }
+    }
+    </head>
+    <h2> Time Table</h2>
+    @if (dt != null && dt.Rows.Count > 0)
+    {
+        <table border="">
+            <thead>
+                @foreach (DataColumn column in dt.Columns)
+                {
+                <th>@column.ColumnName </th>
+            }
+                </thead >
+                <tbody>
+                    @foreach (DataRow row in dt.Rows)
+                    {
+                        <tr>
+                            @foreach (DataColumn column in dt.Columns)
+                            {
+                                <td>@row[column] </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p> No data to display.</p>
+        }
+
+
+</html>
+
+

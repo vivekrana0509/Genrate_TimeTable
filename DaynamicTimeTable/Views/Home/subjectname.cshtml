@@ -1,0 +1,142 @@
+﻿@using System.Web.Mvc
+@using System.Web.UI.WebControls
+@using DaynamicTimeTable.Models
+@model DaynamicTimeTable.Models.TimeTable
+@using (Html.BeginForm("submitsubject", "Home", FormMethod.Post,new {id = "subjectform" ,name = "subjectform" }))
+{//details part
+    @Html.TextBoxFor(m => Model.Days, new { @hidden = "hidden", })
+    @Html.TextBoxFor(m => Model.Subject, new { @hidden = "hidden" })
+    @Html.TextBoxFor(m => Model.working_hour, new { @hidden = "hidden", @id = "totalworkinghour" })
+
+
+  
+
+        <h2>Enter subject Name And Period in per week </h2>
+        <br />
+
+        <br>
+        <div class="row">
+            <section class="col-md-4" aria-labelledby="gettingStarted">
+                <label>    Working days per Week is  :@Model.Days</label>
+                <br /><br />
+                <label>  Subject per in Day   : @Model.Subject</label>
+                @Html.LabelFor(model => model.Subject)
+                <br><br />
+                <label>Total Period is : @(Model.Days * Model.Subject) in Week</label> @*@Html.LabelFor(model => model.Days)*@
+                <br>
+            <spam>Available /Unassing periods   <label id="ava_peri">Label:</label></spam>
+            </section>
+        </div>
+        //assingment parth
+        <table id="subtable">
+            <tr>
+                <th>Subject</th>
+                <th>Period</th>
+            </tr>
+            @for (int i = 0; i < Model.Subject; i++)
+            {
+
+
+
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(model => model.subjectlist[i].Text, new { @class = "form-control", placeholder = "Subject Name", required = "required" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(model => model.subjectlist[i].Value, new { @class = "form-control", placeholder = "Add Period", onkeyup = "couting(id)", @id = "sub" + i, required = "required", onkeypress = "return event.charCode >= 48 && event.charCode <= 57" })
+                    </td>
+                </tr>
+
+            }
+        </table>
+        <br />
+        <input type="button" name="Submit" value="Genrate TimeTable" onclick="formsubmit()" />
+        }
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+     
+        function validate_form(id) {
+            
+            
+           
+
+
+
+
+
+            const dataTable = document.getElementById('subtable');
+            const rows = dataTable.getElementsByTagName('tr');
+            var cells = 0;
+
+            for (let i = 0; i < rows.length; i++) {
+                var cellsInRow = rows[i].getElementsByTagName('td');
+                if (cellsInRow.length > 1) {
+                    var inputField = cellsInRow[1].querySelector('input');
+                    if (inputField) {
+                        var cellValue = parseFloat(inputField.value);
+                        cells += isNaN(cellValue) ? 0 : cellValue;
+                    }
+                }
+            }
+           
+            return cells;
+        }
+        function validate_subject()
+        {
+
+            const dataTable = document.getElementById('subtable');
+            const rows = dataTable.getElementsByTagName('tr');
+            var cells = 0;
+
+            for (let i = 0; i < rows.length; i++)
+            {
+                var cellsInRow = rows[i].getElementsByTagName('td');
+                if (cellsInRow.length > 1)
+                {
+                    var inputField = cellsInRow[0].querySelector('input');
+                    var inputText = inputField.value.trim(); // Trim leading/trailing whitespace
+                    if (inputText == "")
+                    {
+                            return 0;
+                        
+                    }
+                }
+            }
+            return 1;
+            
+        }
+        function couting(id) {
+            var avi_per = document.getElementById("ava_peri");
+            var totalhour = parseFloat(document.getElementById("totalworkinghour").value);
+            var cells = validate_form(id);
+            avi_per.textContent = (totalhour - cells);
+            if (totalhour < cells) {
+                document.getElementById(id).value = "";
+                alert("Total Subject Lecture Is greater Than Total Hours!,Is Not Accepted");
+            }
+        }
+
+        function formsubmit() {
+            var totalhour = parseFloat(document.getElementById("totalworkinghour").value);
+            var cells = validate_form();
+            if (validate_subject()) {
+
+                if (totalhour == cells) {
+
+                    document.subjectform.submit();
+
+                }
+                else {
+                    alert("Fill All data for Genrate TimeTable");
+                }
+
+
+            }
+            else {
+                alert("Fill All subject name Data for Genrate TimeTable");
+            }
+        }
+
+
+    </script>
