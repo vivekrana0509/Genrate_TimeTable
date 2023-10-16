@@ -12,6 +12,7 @@ namespace DaynamicTimeTable.Controllers
     {
         public ActionResult Index()
         {
+            string aa = "";
             return View();
         }
         [HttpPost]
