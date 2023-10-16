@@ -12,24 +12,59 @@
     </section>
     @using (Html.BeginForm())
     {
-            <div class="row">
-                <section class="col-md-4" aria-labelledby="gettingStarted">
-                    <label>    Enter No of Working days per Week  :</label> @Html.TextBoxFor(model => model.Days, new { @class = "form-control", @id = "days", placeholder = "1 to 7", pattern = "[1-7]$" ,required = "required" })
+        <div class="row">
+            <section class="col-md-4" aria-labelledby="gettingStarted">
+                <label>    Enter No of Working days per Week  :</label> @Html.TextBoxFor(model => model.Days, new { @class = "form-control", @id = "days", placeholder = "1 to 7", pattern = "[1-7]$", required = "required" })
 
 
-                    <br /><br />
+                <br /><br />
 
-                    <label>    Enter No of Subject per in Day   :</label> @Html.TextBoxFor(model => model.Subject, new { @class = "form-control", @id = "sunject", placeholder = "1 to 9 ( <9)", pattern = "[1-9]$", required = "required" })
+                <label>    Enter No of Period per Day    :</label> @Html.TextBoxFor(model => model.Subject, new { @class = "form-control", @id = "subject", placeholder = "1 to 9 ( <9)", pattern = "[1-9]$", required = "required" })
 
-                    <br><br />
+                <br><br />
 
-                    <input type="submit" name="submit" />
-                </section>
-            </div>
+                <label>   Total Subject   :</label> @Html.TextBoxFor(model => model.tot_sub, new { @class = "form-control",  @id = "totalsubject", placeholder = "Only Number", pattern = "[1-9]|[0-9][0-9]+$", required = "required" })
+
+                <br><br />
+
+                <input type="submit" name="submit" />
+            </section>
+        </div>
 
     }
-    </main>
+</main>
 
 <script>
-   
+    
+    function checkAndShowTotalSubjectField() {
+        var daysValue = document.getElementById("days").value;
+        var subjectValue = document.getElementById("subject").value;
+        var entersun = document.getElementById("totalsubject").value;
+        // Check if both fields have values
+        if (daysValue !== "" && subjectValue !== "") {
+            document.getElementById("totalsubject").style.display = "block";
+        } else {
+            document.getElementById("totalsubject").style.display = "none";
+        }
+        var maxTotalSubject = daysValue * subjectValue;
+        //document.getElementById("totalsubject").setAttribute("max", maxTotalSubject);
+        if (!isNaN(maxTotalSubject)) {
+            document.getElementById("totalsubject").setAttribute("max", maxTotalSubject);
+        } else {
+            document.getElementById("totalsubject").removeAttribute("max");
+        }
+        if (entersun > maxTotalSubject)
+        {
+            document.getElementById("totalsubject").value = "";
+            alert("Accept only < = "+ maxTotalSubject + "  subjects");
+
+        }
+    }
+
+    // Attach an event listener to the first two input fields to trigger the check
+    document.getElementById("days").addEventListener("input", checkAndShowTotalSubjectField);
+    document.getElementById("subject").addEventListener("input", checkAndShowTotalSubjectField);
+
+    // Attach an event listener to the third input field, if needed
+    document.getElementById("totalsubject").addEventListener("input", checkAndShowTotalSubjectField);
 </script>

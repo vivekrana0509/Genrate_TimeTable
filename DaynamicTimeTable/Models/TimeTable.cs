@@ -11,6 +11,7 @@ namespace DaynamicTimeTable.Models
     {
        
         public int Days { get; set; }
+        public int tot_sub { get; set; }
         public int Subject { get; set; }
         public int working_hour { get; set; }
 
